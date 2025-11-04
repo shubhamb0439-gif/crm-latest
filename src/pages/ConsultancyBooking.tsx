@@ -650,14 +650,14 @@ export default function ConsultancyBooking() {
                 <p className="text-slate-600 mb-6">
                   For job enquiries, please visit our careers page to view available positions and submit your application.
                 </p>
-                <button
-                  onClick={() => {
-                    setShowJobModal(false);
-                  }}
-                  className="w-full bg-[#2563EB] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1d4ed8] transition-colors shadow-md"
+                <a
+                  href="https://careers.oghealthcare.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full bg-[#2563EB] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1d4ed8] transition-colors shadow-md text-center"
                 >
                   Go to Careers Page
-                </button>
+                </a>
                 <button
                   onClick={() => {
                     setShowJobModal(false);

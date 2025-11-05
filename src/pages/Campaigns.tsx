@@ -13,7 +13,10 @@ export default function Campaigns() {
     fetchCampaigns();
   }, []);
 
-  const fetchCampaigns = async () => {
+  const fetchCampaigns = async (showLoading = true) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const { data, error } = await supabase
         .from('campaigns')
@@ -49,7 +52,7 @@ export default function Campaigns() {
         .eq('id', id);
 
       if (error) throw error;
-      fetchCampaigns();
+      await fetchCampaigns(false);
     } catch (error) {
       console.error('Error deleting campaign:', error);
       alert('Failed to delete campaign');

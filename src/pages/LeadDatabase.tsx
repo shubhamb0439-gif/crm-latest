@@ -23,7 +23,7 @@ export default function LeadDatabase() {
     const subscription = supabase
       .channel('leads_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'leads' }, () => {
-        fetchLeads();
+        fetchLeads(false);
       })
       .subscribe();
 
@@ -38,8 +38,10 @@ export default function LeadDatabase() {
     }
   }, [leads, searchTerm, statusFilter, loading]);
 
-  const fetchLeads = async () => {
-    setLoading(true);
+  const fetchLeads = async (showLoading = true) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const { data, error } = await supabase
         .from('leads')
@@ -93,7 +95,7 @@ export default function LeadDatabase() {
         .eq('id', id);
 
       if (error) throw error;
-      fetchLeads();
+      await fetchLeads(false);
     } catch (error) {
       console.error('Error deleting lead:', error);
       alert('Failed to delete lead');

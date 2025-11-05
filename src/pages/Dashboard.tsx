@@ -41,14 +41,14 @@ export default function Dashboard() {
     const leadsSubscription = supabase
       .channel('leads_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'leads' }, () => {
-        fetchStats();
+        fetchStats(false);
       })
       .subscribe();
 
     const assessmentsSubscription = supabase
       .channel('assessments_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'assessments' }, () => {
-        fetchStats();
+        fetchStats(false);
       })
       .subscribe();
 
@@ -58,8 +58,10 @@ export default function Dashboard() {
     };
   }, []);
 
-  const fetchStats = async () => {
-    setLoading(true);
+  const fetchStats = async (showLoading = true) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const { data: leads, error } = await supabase
         .from('leads')

@@ -15,7 +15,7 @@ export default function BookingSubmissions() {
     const subscription = supabase
       .channel('bookings_v2_changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'consultancy_bookings_v2' }, () => {
-        fetchBookings();
+        fetchBookings(false);
       })
       .subscribe();
 
@@ -24,7 +24,10 @@ export default function BookingSubmissions() {
     };
   }, []);
 
-  const fetchBookings = async () => {
+  const fetchBookings = async (showLoading = true) => {
+    if (showLoading) {
+      setLoading(true);
+    }
     try {
       const { data, error } = await supabase
         .from('consultancy_bookings_v2')
@@ -48,7 +51,7 @@ export default function BookingSubmissions() {
         .eq('id', id);
 
       if (error) throw error;
-      fetchBookings();
+      await fetchBookings(false);
     } catch (error) {
       console.error('Error updating booking status:', error);
       alert('Failed to update status');
@@ -65,7 +68,7 @@ export default function BookingSubmissions() {
         .eq('id', id);
 
       if (error) throw error;
-      fetchBookings();
+      await fetchBookings(false);
       setSelectedBooking(null);
     } catch (error) {
       console.error('Error deleting booking:', error);
